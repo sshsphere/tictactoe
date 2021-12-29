@@ -31,7 +31,7 @@ const Gameboard = (()=>{
         else if (board[0][0] == board[1][1] && board[1][1] == board[2][2]) return board[0][0]; //first diagonal
         else if (board[0][2] == board[1][1] && board[1][1] == board[2][0]) return board[0][2]; //second diagonal
         else if (!board.some(row => row.includes(""))) return "Tie"; 
-        else return {"Ongoing", -1}; 
+        else return "Ongoing"; 
     }
     return{getBoard, setBoardPos, clearBoard, isValid};
 })();
@@ -49,25 +49,25 @@ const GameState = (()=>{
     let turn=false;
     const playerX=Player(playername, "X");
     const playerO=Player(playername, "O");
-    const boards=document.querySelectorAll(".grid-item");
+    const squares=document.querySelectorAll(".grid-item");
     const Move=(ind)=>{
         if(!Gameboard.isValid(ind)) return;
-        const currentboard=document.querySelector(`.grid-item[data-ind="${ind}"]`);
+        const currentSquare=document.querySelector(`.grid-item[data-ind="${ind}"]`);
         if(turn==0){
             playerX.makeMove(ind);
-            currentboard.textContent="X";
+            currentSquare.textContent="X";
             turn=!turn;
             
         }
         else{
             playerO.makeMove(ind);
-            currentboard.textContent="O";
+            currentSquare.textContent="O";
             turn=!turn;
         }
     }
-    boards.forEach((board)=>{
-        board.addEventListener('click', ()=>{
-            Move(board.dataset.ind);
+    squares.forEach((square)=>{
+        square.addEventListener('click', ()=>{
+            Move(square.dataset.ind);
             
         });
     });
