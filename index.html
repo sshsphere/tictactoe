@@ -8,16 +8,34 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="grid-container">
-        <div data-ind="0" class="grid-item"></div>
-        <div data-ind="1" class="grid-item"></div>
-        <div data-ind="2" class="grid-item"></div>
-        <div data-ind="3" class="grid-item"></div>
-        <div data-ind="4" class="grid-item"></div>
-        <div data-ind="5" class="grid-item"></div>
-        <div data-ind="6" class="grid-item"></div>
-        <div data-ind="7" class="grid-item"></div>
-        <div data-ind="8" class="grid-item"></div>
+    <h1>Tic Tac Toe</h1>
+    <div class="main">
+        <div class="player-container">
+            <div class="player-icon">X</div>
+            <div class="player-name">Player1</div>
+            <div class="player-score">Score: <span class="player-score-number" data-score="0">0</span></div>
+        </div>
+        <div class="grid-container">
+            <div data-ind="0" class="grid-item"></div>
+            <div data-ind="1" class="grid-item"></div>
+            <div data-ind="2" class="grid-item"></div>
+            <div data-ind="3" class="grid-item"></div>
+            <div data-ind="4" class="grid-item"></div>
+            <div data-ind="5" class="grid-item"></div>
+            <div data-ind="6" class="grid-item"></div>
+            <div data-ind="7" class="grid-item"></div>
+            <div data-ind="8" class="grid-item"></div>
+        </div>
+        <div class="player-container">
+            <div class="player-icon">O</div>
+            <div class="player-name">Player2</div>
+            <div class="player-score">Score: <span class="player-score-number" data-score="1">0</span></div>
+        </div>
+    </div>
+    <div class="button-container">
+        <button id="clear">Clear</button>
+        <button id="reset">Reset</button>
+        <button id="new-game">New Game</button>
     </div>
     <script src="script.js"></script>
 </body>
