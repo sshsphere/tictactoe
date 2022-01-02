@@ -16,7 +16,7 @@ html, body{
     cursor:pointer;
     user-select: none;
     line-height: 1.25;
-    transition:background-color 0.2s ease;
+    transition:background-color 0.2s ease,color 0.3s ease;
 }
 .grid-item:hover{
     background-color: gainsboro;
@@ -28,10 +28,23 @@ html, body{
     text-align: center;
     border:2px solid rgba(0, 0, 0, 0.555);
     border-radius: 10px;
-    padding:100px 40px;
+    padding:0px 40px;
+    
+    font-size:18pt;
 }
-.player-name, .player-score{
-    font-size:16pt;
+.player-icon{
+    font-size: 100px;
+}
+.fa-circle{
+    visibility:hidden;
+    margin:20px 0px;
+    font-size:30pt;
+}
+.fa-trophy{
+    visibility:hidden;
+    margin:20px 0px;
+    font-size:30pt;
+    color:goldenrod;
 }
 .grid-container{
     background-color: black;
@@ -47,20 +60,22 @@ html, body{
 body{
     display:flex;
     flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 0px;
+    justify-content:space-around;
+    align-items:center;
+    
+    border-radius: 100%;
 }
 .main{    
     display: flex;
-    width:100%;
-    justify-content:space-around;
+    width:min(1300px,100%);
     align-items: center;
+    justify-content: space-around;
+    margin-bottom: 10px;
 }
 .button-container{
     display:flex;
     width:100%;
-    justify-content: space-between;
+    justify-content:space-around;
     max-width: 500px;
 }
 button{
@@ -69,10 +84,52 @@ button{
     background-color: gainsboro;
     padding: 10px 10px;
     width:120px;
+    font-size: 16pt;
 }
 button:hover{
     background-color: rgba(128, 128, 128, 0.473);
 }
 button:active{
     background-color: rgba(0, 0, 0, 0.555);
+}
+@media (max-width: 920px){
+    .main{
+        flex-direction: column;
+        gap:30px;
+    }
+    .player-container{
+        padding: 0;
+        font-size:42pt;
+        display:flex;
+        align-items:center;
+        gap:10px;
+        flex-wrap: wrap;
+        padding: 0px 20px;
+    }
+}
+h1{
+    font-size: 45pt;
+}
+@media (max-width:500px){
+    .grid-container{
+        height:300px;
+        width: 300px;
+        min-width: 300px;
+        min-height: 300px;
+    }
+    .grid-item{
+        line-height: 0.9;
+    }
+    .main{
+        gap:10px;
+    }
+    body{
+        gap:10px;
+    }
+}
+.glow{
+    color:gold;
+}
+.show{
+    visibility:visible;
 }
