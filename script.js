@@ -58,7 +58,7 @@ const GameState = (()=>{
     let nextstartingturn=true;
     let finished=false;
 
-    const playerX=Player("Test1", "X");
+    const playerX=Player("TTTTTTTTTTTTTTTTTTTTTTTT", "X");
     const playerO=Player("Test2", "O");
 
     const squares=document.querySelectorAll(".grid-item");
@@ -71,6 +71,7 @@ const GameState = (()=>{
     
     nameDisplay[0].textContent=playerX.getName();
     nameDisplay[1].textContent=playerO.getName();
+    
     const updateCircleDisplay=()=>{
         circleDisplay[Number(turn)].classList.add('show');
         circleDisplay[Number(!turn)].classList.remove('show');
