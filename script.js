@@ -98,6 +98,9 @@ const GameSettings = (()=>{
     };
     const openMenu = () =>{
         menuOverlay.style.display="block";
+        menuOverlay.style.overflow="auto";
+        document.body.style.overflow="hidden";
+        document.body.parentNode.style.overflow="hidden";
     };
     const closeMenu = () =>{
         menuOverlay.style.display="none";
@@ -219,6 +222,7 @@ const GameState = (()=>{
     const winSound=new Audio('sounds/b.wav');
     const moveSound=new Audio('sounds/c.wav');
     let canMove=true;
+    let x;
     const checkWin=()=>{
         if(GameSettings.getSettings().numOfRounds===-1){
             return;
@@ -257,6 +261,8 @@ const GameState = (()=>{
         updateScoreDisplay(); 
     };
     const resetGame=()=>{
+        clearTimeout(x);
+        canMove=true;
         playerX.resetInfo();
         playerO.resetInfo();
         updateScoreDisplay();
@@ -288,10 +294,12 @@ const GameState = (()=>{
             finished=false;
             if(turn==1 && playerO.getAILevel()!==-1){
                 canMove=false;
-                setTimeout(()=> {
-                    Move(playerO.getAIMove());
-                    canMove=true;
-                }, 400)
+                (()=>{
+                    x = setTimeout(()=> {
+                        Move(playerO.getAIMove());
+                        canMove=true;
+                    }, 400);
+                })();
             }
             return;
         }
@@ -334,10 +342,12 @@ const GameState = (()=>{
         if(!finished){
             if(turn==1 && playerO.getAILevel()!==-1){
                 canMove=false;
-                setTimeout(()=> {
-                    Move(playerO.getAIMove());
-                    canMove=true;
-                }, 400)
+                (()=>{
+                    x = setTimeout(()=> {
+                        Move(playerO.getAIMove());
+                        canMove=true;
+                    }, 400);
+                })();
             }
         }
     }
@@ -352,6 +362,10 @@ const GameState = (()=>{
     newGameButton.addEventListener('click', GameSettings.openMenu);
     form.addEventListener('submit', (e)=>{
         winScreen.style.setProperty("display", "none");
+        document.querySelector(".setup-overlay").style.overflow="hidden";
+        document.body.style.overflow="auto";
+        document.body.parentNode.style.overflow="auto";
+
         GameSettings.setValuesOnSubmit();
         resetGame();
         e.preventDefault();
