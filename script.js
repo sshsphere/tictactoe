@@ -111,7 +111,7 @@ const GameSettings = (() => {
     };
     onePlayerButton.addEventListener('click', () => {
         plaerCount = 1;
-        Array.from(radioContainer.children).forEach((item) => { item.style.display = "block" });
+        Array.from(radioContainer.children).forEach((item) => { item.style.display = "flex" });
         gameLengthText.style.display = "block";
         AIDescriptionText.style.display = "block";
         versusText.style.display = "none";
@@ -122,7 +122,7 @@ const GameSettings = (() => {
     });
     twoPlayerButton.addEventListener('click', () => {
         playerCount = 2;
-        Array.from(radioContainer.children).forEach((item) => { item.style.display = "block" });
+        Array.from(radioContainer.children).forEach((item) => { item.style.display = "flex" });
         gameLengthText.style.display = "block";
         AIDescriptionText.style.display = "none";
         versusText.style.display = "block";
