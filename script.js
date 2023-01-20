@@ -1,46 +1,49 @@
 const Gameboard = (() => {
-    let board = [
-        ["", "", ""],
-        ["", "", ""],
-        ["", "", ""]
-    ];
-    let possibleMoves = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8]);
+    const m_winningCombinations = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6]
+    ]
+    let m_board = Array(9).fill("");
+    let m_possibleMoves = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8]);
 
-    const getBoard = () => board;
+    const getBoard = () => m_board;
     const isValid = (index) => {
-        return possibleMoves.has(Number(index));
+        return m_possibleMoves.has(Number(index));
     }
     const setBoardPos = (index, mark) => {
-        board[parseInt(index / 3)][index % 3] = mark;
-        possibleMoves.delete(Number(index));
+        m_board[index] = mark;
+        m_possibleMoves.delete(Number(index));
     }
     const clearBoard = () => {
-        board = [
-            ["", "", ""],
-            ["", "", ""],
-            ["", "", ""]
-        ];
-        possibleMoves = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8]);
+        m_board = Array(9).fill("");
+        m_possibleMoves = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8]);
     }
-    const checkWin = (boardpos = getBoard()) => {
-        if (boardpos[0][0] == boardpos[0][1] && boardpos[0][1] == boardpos[0][2] && boardpos[0][0] != "") return { mark: "Win", symbol: boardpos[0][0], positions: [0, 1, 2] }; //first row
-        else if (boardpos[1][0] == boardpos[1][1] && boardpos[1][1] == boardpos[1][2] && boardpos[1][0] != "") return { mark: "Win", symbol: boardpos[1][0], positions: [3, 4, 5] }; //second row
-        else if (boardpos[2][0] == boardpos[2][1] && boardpos[2][1] == boardpos[2][2] && boardpos[2][0] != "") return { mark: "Win", symbol: boardpos[2][0], positions: [6, 7, 8] }; //third row
-        else if (boardpos[0][0] == boardpos[1][0] && boardpos[1][0] == boardpos[2][0] && boardpos[0][0] != "") return { mark: "Win", symbol: boardpos[0][0], positions: [0, 3, 6] }; //first column
-        else if (boardpos[0][1] == boardpos[1][1] && boardpos[1][1] == boardpos[2][1] && boardpos[0][1] != "") return { mark: "Win", symbol: boardpos[0][1], positions: [1, 4, 7] }; //second column
-        else if (boardpos[0][2] == boardpos[1][2] && boardpos[1][2] == boardpos[2][2] && boardpos[0][2] != "") return { mark: "Win", symbol: boardpos[0][2], positions: [2, 5, 8] }; //third column
-        else if (boardpos[0][0] == boardpos[1][1] && boardpos[1][1] == boardpos[2][2] && boardpos[0][0] != "") return { mark: "Win", symbol: boardpos[0][0], positions: [0, 4, 8] }; //first diagonal
-        else if (boardpos[0][2] == boardpos[1][1] && boardpos[1][1] == boardpos[2][0] && boardpos[0][2] != "") return { mark: "Win", symbol: boardpos[0][2], positions: [2, 4, 6] }; //second diagonal
-        else if (!boardpos.some(row => row.includes(""))) return { mark: "Tie" };
+    const checkWin = (m_boardpos = getBoard()) => {
+        let index = m_winningCombinations.findIndex(combination => {
+            return m_winningCombinations.every(index => {
+                return m_boardpos[combination[0]] === m_boardpos[index];
+            })
+        });
+        if (index != -1) {
+            return { mark: "Win", symbol: m_boardpos[m_winningCombinations[index][0]], positions: m_winningCombinations[index] };
+        }
+
+        else if (!m_boardpos.some(row => row.includes(""))) return { mark: "Tie" };
         else return { mark: "Ongoing" };
     }
     const getRandomPos = () => {
-        let pos = Array.from(possibleMoves);
+        let pos = Array.from(m_possibleMoves);
         return pos[Math.floor(Math.random() * pos.length)];
     }
     const minimax = (boardpos = getBoard(), depth = 0, ismaximizing = 0, maxDepth = Infinity) => {
         const mark = (ismaximizing) ? "X" : "O";
-        let bestScore = (ismaximizing) ? -2 : 2;
+        let bestScore = (ismaximizing) ? Number.MIN_VALUE : Number.MAX_VALUE;
         let result = checkWin(boardpos);
         let moves = [];
         if (result.mark !== "Ongoing") {
@@ -52,26 +55,23 @@ const Gameboard = (() => {
         if (depth > maxDepth) {
             return 0;
         }
-        for (let i = 0; i < 3; i++) {
-            for (let j = 0; j < 3; j++) {
-                if (boardpos[i][j] === "") {
-                    boardpos[i][j] = mark;
-                    let score = minimax(boardpos, depth + 1, !ismaximizing, maxDepth);
-                    boardpos[i][j] = "";
-                    if (score < bestScore && depth === 0) {
-                        moves = [];
-                    }
-                    bestScore = (ismaximizing) ? Math.max(score, bestScore) : Math.min(score, bestScore);
-                    if (score === bestScore && depth === 0) {
-                        moves.push({ i, j });
-                    }
+        for (let i = 0; i < 9; i++) {
+            if (boardpos[i] === "") {
+                boardpos[i] = mark;
+                let score = minimax(boardpos, depth + 1, !ismaximizing, maxDepth);
+                boardpos[i] = "";
+                if (score < bestScore && depth === 0) {
+                    moves = [];
+                }
+                bestScore = (ismaximizing) ? Math.max(score, bestScore) : Math.min(score, bestScore);
+                if (score === bestScore && depth === 0) {
+                    moves.push(i);
                 }
             }
         }
         if (depth === 0) {
             const movepos = moves[Math.floor(Math.random() * moves.length)];
-            console.log(moves);
-            return movepos.i * 3 + movepos.j;
+            return movepos;
         }
         else {
             return bestScore;
@@ -110,7 +110,8 @@ const GameSettings = (() => {
         menuOverlay.style.display = "none";
     };
     onePlayerButton.addEventListener('click', () => {
-        plaerCount = 1;
+
+        playerCount = 1;
         Array.from(radioContainer.children).forEach((item) => { item.style.display = "flex" });
         gameLengthText.style.display = "block";
         AIDescriptionText.style.display = "block";
@@ -145,6 +146,7 @@ const GameSettings = (() => {
             playerNames[1] = "Player 2";
         }
         if (playerCount === 1) {
+
             AIDifficulty = AIDifficultyField.value;
             playerNames[1] = ` ${AIDifficulty.charAt(0).toUpperCase() + AIDifficulty.slice(1)} AI`;
         }
@@ -210,6 +212,9 @@ const Player = (mark) => {
 }
 
 const GameState = (() => {
+    let turn = false;
+    let nextstartingturn = true;
+    let finished = false;
     const playerX = Player("X");
     const playerO = Player("O");
     const form = document.querySelector(".player-form");
