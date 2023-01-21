@@ -10,6 +10,9 @@ jobs:
     environment: raspbpi
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/checkout@v2
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1
       - name: "Set up server connection"
         uses: egor-tensin/setup-wireguard@master
         with:
