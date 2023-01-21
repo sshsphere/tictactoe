@@ -9,9 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     environment: raspbpi
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v3
       - name: "Set up server connection"
-        uses: egor-tensin/setup-wireguard@v1
+        uses: egor-tensin/setup-wireguard@master
         with:
           endpoint: '${{ secrets.ENDPOINT }}'
           endpoint_public_key: '${{ secrets.ENDPOINT_PUBLIC }}'
