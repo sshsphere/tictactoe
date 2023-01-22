@@ -1,2 +1,2 @@
 # Javascript TicTacToe
-Hosted at http://hsphere.ml
+Hosted at http://hsphere.live
