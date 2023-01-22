@@ -10,18 +10,14 @@ jobs:
     environment: raspbpi
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/checkout@v2
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-      - name: "Set up server connection"
-        uses: egor-tensin/setup-wireguard@master
-        with:
-          endpoint: '${{ secrets.ENDPOINT }}'
-          endpoint_public_key: '${{ secrets.ENDPOINT_PUBLIC }}'
-          ips: '${{ secrets.IPS }}'
-          allowed_ips: '${{ secrets.ALLOWED_IPS }}'
-          private_key: '${{ secrets.PRIVATE }}'
-          preshared_key: '${{ secrets.PRESHARED }}'
+      - name: Install wireguard
+        run: sudo apt-get install wireguard openresolv
+      - name: Create wireguard configuration
+        run: |
+          touch $GITHUB_WORKSPACE/tunnel.conf
+          echo {{secrets.WIREGUARD_CONFIG}} > $GITHUB_WORKSPACE/tunnel.conf
+          sudo cp $GITHUB_WORKSPACE/tunnel.conf /etc/wireguard/
+          wg-quick up tunnel
       - name: "Push to server"
         uses: appleboy/scp-action@master
         with:
