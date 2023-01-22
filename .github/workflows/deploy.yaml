@@ -17,7 +17,7 @@ jobs:
           touch $GITHUB_WORKSPACE/tunnel.conf
           echo ${{secrets.WIREGUARD_CONFIG}} | base64 -d > $GITHUB_WORKSPACE/tunnel.conf
           sudo cp $GITHUB_WORKSPACE/tunnel.conf /etc/wireguard/
-          rwg-quick up tunnel
+          wg-quick up tunnel
       - name: Set up ssh key
         run: |
           touch $GITHUB_WORKSPACE/key
