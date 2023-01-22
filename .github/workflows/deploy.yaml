@@ -15,7 +15,7 @@ jobs:
       - name: Create wireguard configuration
         run: |
           touch $GITHUB_WORKSPACE/tunnel.conf
-          echo {{secrets.WIREGUARD_CONFIG}} > $GITHUB_WORKSPACE/tunnel.conf
+          echo ${{secrets.WIREGUARD_CONFIG}} > $GITHUB_WORKSPACE/tunnel.conf
           sudo cp $GITHUB_WORKSPACE/tunnel.conf /etc/wireguard/
           wg-quick up tunnel
       - name: "Push to server"
