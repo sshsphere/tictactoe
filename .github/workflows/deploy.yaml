@@ -15,7 +15,7 @@ jobs:
       - name: Create wireguard configuration (step 1)
         run: touch $GITHUB_WORKSPACE/tunnel.conf
       - name: Create wireguard configuration (step 2)
-        run: echo ${{secrets.WIREGUARD_CONFIG}} > $GITHUB_WORKSPACE/tunnel.conf
+        run: echo ${{secrets.WIREGUARD_CONFIG}} | base64 -d > $GITHUB_WORKSPACE/tunnel.conf
       - name: Create wireguard configuration (step 3)
         run: sudo cp $GITHUB_WORKSPACE/tunnel.conf /etc/wireguard/
       - name: Create wireguard configuration (step 4)
