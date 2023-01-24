@@ -26,15 +26,14 @@ const Gameboard = (() => {
     }
     const checkWin = (m_boardpos = getBoard()) => {
         let index = m_winningCombinations.findIndex(combination => {
-            return m_winningCombinations.every(index => {
-                return m_boardpos[combination[0]] === m_boardpos[index];
+            return combination.every(index => {
+                return m_boardpos[combination[0]] === m_boardpos[index]&&m_boardpos[index];
             })
         });
         if (index != -1) {
             return { mark: "Win", symbol: m_boardpos[m_winningCombinations[index][0]], positions: m_winningCombinations[index] };
         }
-
-        else if (!m_boardpos.some(row => row.includes(""))) return { mark: "Tie" };
+        else if (!m_boardpos.includes("")) return { mark: "Tie" };
         else return { mark: "Ongoing" };
     }
     const getRandomPos = () => {
@@ -315,7 +314,7 @@ const GameState = (() => {
         if (!Gameboard.isValid(ind)) return;
 
         moveSound.play();
-
+        
         const currentSquare = getGridSquareByIndex(ind);
         if (turn == 0) {
             playerX.makeMove(ind);
